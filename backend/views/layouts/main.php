@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use backend\assets\AppAsset;
+use common\modules\shop\Module;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -37,14 +38,25 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => Module::t('module', 'SHOP'),
+            'items' => [
+                ['label' => Module::t('module', 'PRODUCTS'), 'url' => ['/shop/product/index']],
+                ['label' => Module::t('module', 'CATEGORIES'), 'url' => ['/shop/category/index']],
+                ['label' => Module::t('module', 'TAGS'), 'url' => ['/shop/tag/index']],
+                ['label' => Module::t('module', 'PRODUCT_TAG'), 'url' => ['/shop/product-tag/index']],
+                ['label' => Module::t('module', 'ATTRIBUTES'), 'url' => ['/shop/attribute/index']],
+                ['label' => Module::t('module', 'ATTRIBUTE_VALUES'), 'url' => ['/shop/attribute-value/index']],
+                ['label' => Module::t('module', 'IMAGES'), 'url' => ['/shop/image/index']],
+                ['label' => Module::t('module', 'STATUSES'), 'url' => ['/shop/status/index']],
+            ]],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => \common\modules\user\Module::t('module', 'LOGIN'), 'url' => ['/user/login']];
     } else {
         $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
+            . Html::beginForm(['/user/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                \common\modules\user\Module::t('module', 'LOGOUT'). ' (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

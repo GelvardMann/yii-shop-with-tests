@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -16,7 +17,7 @@ return [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\modules\user\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -36,14 +37,27 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'site/index',
+                '<action:index|about|contact>' => 'site/<action>',
             ],
         ],
-        */
+    ],
+    'modules' => [
+        'user' => [
+            'class' => 'common\modules\user\Module',
+            'controllerNamespace' => 'common\modules\user\controllers\frontend',
+            'viewPath' => '@common/modules/user/views/frontend',
+            'passwordResetTokenExpire' => 3600,
+        ],
+        'shop' => [
+            'class' => 'common\modules\shop\Module',
+            'controllerNamespace' => 'common\modules\shop\controllers\frontend',
+            'viewPath' => '@common/modules/shop/views/frontend',
+        ],
     ],
     'params' => $params,
 ];

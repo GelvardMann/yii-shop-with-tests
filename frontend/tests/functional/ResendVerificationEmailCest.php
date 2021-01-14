@@ -21,7 +21,7 @@ class ResendVerificationEmailCest
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ];
@@ -29,7 +29,7 @@ class ResendVerificationEmailCest
 
     public function _before(FunctionalTester $I)
     {
-        $I->amOnRoute('/site/resend-verification-email');
+        $I->amOnRoute('/user/resend-verification-email');
     }
 
     protected function formParams($email)
@@ -41,7 +41,6 @@ class ResendVerificationEmailCest
 
     public function checkPage(FunctionalTester $I)
     {
-        $I->see('Resend verification email', 'h1');
         $I->see('Please fill out your email. A verification email will be sent there.');
     }
 
@@ -73,10 +72,10 @@ class ResendVerificationEmailCest
     {
         $I->submitForm($this->formId, $this->formParams('test@mail.com'));
         $I->canSeeEmailIsSent();
-        $I->seeRecord('common\models\User', [
+        $I->seeRecord('common\modules\user\models\User', [
             'email' => 'test@mail.com',
             'username' => 'test.test',
-            'status' => \common\models\User::STATUS_INACTIVE
+            'status' => \common\modules\user\models\User::STATUS_INACTIVE
         ]);
         $I->see('Check your email for further instructions.');
     }

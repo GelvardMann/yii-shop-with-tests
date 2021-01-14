@@ -2,6 +2,7 @@
 
 namespace frontend\tests\functional;
 
+use common\modules\user\models\User;
 use frontend\tests\FunctionalTester;
 
 class SignupCest
@@ -11,12 +12,11 @@ class SignupCest
 
     public function _before(FunctionalTester $I)
     {
-        $I->amOnRoute('site/signup');
+        $I->amOnRoute('user/signup');
     }
 
     public function signupWithEmptyFields(FunctionalTester $I)
     {
-        $I->see('Signup', 'h1');
         $I->see('Please fill out the following fields to signup:');
         $I->submitForm($this->formId, []);
         $I->seeValidationError('Username cannot be blank.');
@@ -47,10 +47,10 @@ class SignupCest
             'SignupForm[password]' => 'tester_password',
         ]);
 
-        $I->seeRecord('common\models\User', [
+        $I->seeRecord('common\modules\user\models\User', [
             'username' => 'tester',
             'email' => 'tester.email@example.com',
-            'status' => \common\models\User::STATUS_INACTIVE
+            'status' => User::STATUS_INACTIVE
         ]);
 
         $I->seeEmailIsSent();

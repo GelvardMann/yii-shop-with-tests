@@ -32,20 +32,21 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => Yii::t('app', 'HOME'), 'url' => ['/site/index']],
+        ['label' => Yii::t('app', 'SHOP'), 'url' => ['/shop/shop/index']],
+        ['label' => Yii::t('app', 'ABOUT'), 'url' => ['/site/about']],
+        ['label' => Yii::t('app', 'CONTACT'), 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => Yii::t('app', 'SIGNUP'), 'url' => ['/user/default/signup']];
+        $menuItems[] = ['label' => Yii::t('app', 'LOGIN'), 'url' => ['/user/default/login']];
     } else {
         $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
+            . Html::beginForm(['/user/default/logout'], 'post')
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
