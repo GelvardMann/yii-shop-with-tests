@@ -17,7 +17,7 @@ class ImageSearch extends Image
     public function rules(): array
     {
         return [
-            [['id', 'product_id'], 'integer'],
+            [['id', 'product_id', 'sort_id'], 'integer'],
             [['name'], 'safe'],
         ];
     }

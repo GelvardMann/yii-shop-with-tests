@@ -107,7 +107,7 @@ class ProductController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      * @throws Exception
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): mixed
     {
         $model = $this->findModel($id);
         $images = $model->images;

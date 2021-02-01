@@ -16,11 +16,12 @@ class ShopController extends Controller
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $relatedData = $model->getRelatedData();
-
+        $mainImage = ['name' => 'test'];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'relatedData' => $relatedData,
+            'mainImage' => $mainImage,
         ]);
     }
 

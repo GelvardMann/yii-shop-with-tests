@@ -3,6 +3,11 @@ return [
     'id' => 'app-common-tests',
     'language' => 'en-En',
     'basePath' => dirname(__DIR__),
+    'modules' => [
+        'debug' => [
+            'class' => 'yii\debug\Module',
+        ]
+    ],
     'components' => [
         'user' => [
             'class' => 'yii\web\User',

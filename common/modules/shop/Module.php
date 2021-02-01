@@ -9,12 +9,15 @@ use Yii;
  */
 class Module extends \yii\base\Module
 {
+    /**
+     * @var string
+     */
     public $controllerNamespace = 'common\modules\shop\controllers';
 
     /**
      * @var int
      */
-    public $countUploadFiles = 7;
+    public int $countUploadFiles = 7;
 
     /**
      * {}
@@ -34,7 +37,7 @@ class Module extends \yii\base\Module
      * @param $alias
      * @return string
      */
-    public static function getAlias($alias)
+    public static function getAlias($alias): string
     {
         return Yii::getAlias($alias);
     }

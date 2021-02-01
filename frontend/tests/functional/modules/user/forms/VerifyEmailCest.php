@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\tests\functional;
+namespace frontend\tests\functional\modules\user\forms;
 
 use common\fixtures\UserFixture;
 use frontend\tests\FunctionalTester;

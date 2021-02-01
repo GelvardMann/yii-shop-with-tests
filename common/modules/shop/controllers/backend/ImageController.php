@@ -4,10 +4,12 @@ namespace common\modules\shop\controllers\backend;
 
 use common\modules\shop\models\backend\helpers\FileManager;
 use common\modules\shop\Module;
+use JetBrains\PhpStorm\ArrayShape;
 use Yii;
 use common\modules\shop\models\backend\Image;
 use common\modules\shop\models\backend\search\ImageSearch;
 use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,7 +39,7 @@ class ImageController extends Controller
      * Lists all Image models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $searchModel = new ImageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -51,10 +53,10 @@ class ImageController extends Controller
     /**
      * Displays a single Image model.
      * @param integer $id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView(int $id)
+    public function actionView(int $id): string
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -65,10 +67,10 @@ class ImageController extends Controller
      * Creates a new Image model.
      * If creation is successful, the browser will be redirected to the 'product view' page.
      * @param $product_id
-     * @return mixed
-     * @throws
+     * @return string
+     * @throws Exception
      */
-    public function actionCreate($product_id)
+    public function actionCreate($product_id): string
     {
         $model = new Image();
 
@@ -92,10 +94,10 @@ class ImageController extends Controller
      * If update is successful, the browser will be redirected to the 'product view' page.
      * @param integer $id
      * @param integer $product_id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate(int $id, int $product_id)
+    public function actionUpdate(int $id, int $product_id): string
     {
         $model = $this->findModel($id);
 
@@ -117,11 +119,10 @@ class ImageController extends Controller
      * If deletion is successful, the browser will be redirected to the 'product view' page.
      * @param integer $id
      * @param $product_id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException
-     * @throws ErrorException
      */
-    public function actionDelete(int $id, $product_id)
+    public function actionDelete(int $id, $product_id): string
     {
         $fileManager = new FileManager();
 

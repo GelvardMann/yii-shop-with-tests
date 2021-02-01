@@ -36,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <?php foreach ($dataProvider->getModels() as $product): ?>
                     <?= $this->render('_products', [
-                        'product' => $product
+                        'product' => $product,
+                        'mainImage' => $mainImage
                     ]) ?>
                 <?php endforeach; ?>
             </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\tests\unit\models;
+namespace frontend\tests\unit\modules\user\forms;
 
 
 use Codeception\Test\Unit;

@@ -1,23 +1,26 @@
 <?php
-namespace frontend\tests\unit\models;
+namespace frontend\tests\unit\modules\user\forms;
 
+use Codeception\Test\Unit;
 use common\fixtures\UserFixture;
 use common\modules\user\forms\SignupForm;
 use common\modules\user\models\User;
+use frontend\tests\UnitTester;
+use Yii;
 
-class SignupFormTest extends \Codeception\Test\Unit
+class SignupFormTest extends Unit
 {
     /**
-     * @var \frontend\tests\UnitTester
+     * @var UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
 
 
     public function _before()
     {
         $this->tester->haveFixtures([
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php'
             ]
         ]);
@@ -47,8 +50,8 @@ class SignupFormTest extends \Codeception\Test\Unit
 
         expect($mail)->isInstanceOf('yii\mail\MessageInterface');
         expect($mail->getTo())->hasKey('some_email@example.com');
-        expect($mail->getFrom())->hasKey(\Yii::$app->params['supportEmail']);
-        expect($mail->getSubject())->equals('Account registration at ' . \Yii::$app->name);
+        expect($mail->getFrom())->hasKey(Yii::$app->params['supportEmail']);
+        expect($mail->getSubject())->equals('Account registration at ' . Yii::$app->name);
         expect($mail->toString())->stringContainsString($user->verification_token);
     }
 

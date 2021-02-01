@@ -40,7 +40,6 @@ class FileManager extends FileHelper
     /**
      * @param $path
      * @param $name
-     * @throws ErrorException
      */
     public function deleteFile($name, $path)
     {
@@ -55,25 +54,4 @@ class FileManager extends FileHelper
             }
         }
     }
-//
-//    /**
-//     * @param $path
-//     */
-//    private function makeDir($path)
-//    {
-//        if (!file_exists($path)) {
-//            mkdir($path);
-//        }
-//    }
-//
-//    /**
-//     * @param int $path
-//     */
-//    private function removeDir($path)
-//    {
-//        $files = glob($path . "*");
-//        if (empty($files)) {
-//            rmdir($path);
-//        }
-//    }
 }

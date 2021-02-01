@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'product_id',
             'name',
+            'sort_id',
 
         ],
     ]); ?>

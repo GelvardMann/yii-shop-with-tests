@@ -4,6 +4,7 @@ namespace common\modules\shop\models\backend;
 
 use common\modules\shop\models\backend\helpers\FileManager;
 use common\modules\shop\Module;
+use JetBrains\PhpStorm\ArrayShape;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -15,6 +16,7 @@ use yii\web\NotFoundHttpException;
  *
  * @property int $id
  * @property int $product_id
+ * @property int $sort_id
  * @property string $name
  *
  * @property Product $product
@@ -50,7 +52,7 @@ class Image extends ActiveRecord
     {
         return [
             [['product_id', 'name'], 'required'],
-            [['product_id'], 'integer'],
+            [['product_id', 'sort_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => $this->countUploadFiles],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
@@ -84,17 +86,21 @@ class Image extends ActiveRecord
      * @param array $files
      * @param integer $product_id
      * @return bool
+     * @throws Exception
      */
     public function uploadImages(array $files, int $product_id): bool
     {
         $path = Module::getAlias('@uploads/images/shop/' . $product_id . '/');
         $fileManager = new FileManager();
         $namesImages = $fileManager->uploadFiles($files, $path);
+        $sort_id = 0;
         if ($namesImages) {
             foreach ($namesImages as $name) {
                 $model = new Image();
                 $model->product_id = $product_id;
                 $model->name = $name;
+                $model->sort_id = $sort_id;
+                $sort_id++;
                 $model->save();
             }
             return true;
@@ -127,5 +133,4 @@ class Image extends ActiveRecord
             throw new NotFoundHttpException(Module::t('module', 'SOMETHING_WRONG'));
         }
     }
-
 }
