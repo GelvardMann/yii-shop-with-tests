@@ -7,14 +7,14 @@ use yii\data\ActiveDataProvider;
 use common\modules\shop\models\backend\Category;
 
 /**
- * CategorySearch represents the model behind the search form of `common\modules\shop\models\backend\category`.
+ * CategorySearch represents the model behind the search form of `common\modules\shop\models\backend\Category`.
  */
 class CategorySearch extends Category
 {
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'parent_id'], 'integer'],
@@ -25,7 +25,7 @@ class CategorySearch extends Category
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,7 +38,7 @@ class CategorySearch extends Category
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = Category::find();
 

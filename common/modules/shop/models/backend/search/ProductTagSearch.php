@@ -14,7 +14,7 @@ class ProductTagSearch extends ProductTag
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'tag_id'], 'integer'],
@@ -24,7 +24,7 @@ class ProductTagSearch extends ProductTag
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -37,7 +37,7 @@ class ProductTagSearch extends ProductTag
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
         $query = ProductTag::find()->with(['product', 'tag']);
 

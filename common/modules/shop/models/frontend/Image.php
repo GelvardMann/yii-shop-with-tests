@@ -21,7 +21,7 @@ class Image extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%image}}';
     }
@@ -29,7 +29,7 @@ class Image extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'name'], 'required'],
@@ -42,7 +42,7 @@ class Image extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('module', 'ID'),
@@ -65,12 +65,12 @@ class Image extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @return ImageQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): ImageQuery
     {
         return new ImageQuery(get_called_class());
     }
 
-    public function getMainImage(array $images)
+    public function getMainImage(array $images): array
     {
         $mainImage = array();
 

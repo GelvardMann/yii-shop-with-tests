@@ -2,8 +2,6 @@
 
 namespace common\modules\shop\models\backend;
 
-use common\modules\shop\models\backend\helpers\FileManager;
-use common\modules\shop\models\backend\query\ProductQuery;
 use common\modules\shop\Module;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -31,12 +29,11 @@ use yii\web\UploadedFile;
  * @property int $updated_at
  *
  * @property AttributeValue[] $attributeValues
- * @property Attribute[] $productAttributes
+ * @property Attribute[] $attributes0
  * @property Image[] $images
  * @property Category $category
  * @property Status $status
  * @property ProductTag[] $productTags
- * @property-read array $relatedData
  * @property Tag[] $tags
  */
 class Product extends ActiveRecord
@@ -111,7 +108,6 @@ class Product extends ActiveRecord
             'price' => Module::t('module', 'PRICE'),
             'created_at' => Module::t('module', 'CREATED_AT'),
             'updated_at' => Module::t('module', 'UPDATED_AT'),
-            'tag_id' => Module::t('module', 'TAG_ID'),
             'file' => Module::t('module', 'IMAGES'),
         ];
     }
@@ -119,6 +115,7 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[AttributeValues]].
      *
+     * @return ActiveQuery
      */
     public function getAttributeValues(): ActiveQuery
     {
@@ -128,6 +125,7 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[Attributes]].
      *
+     * @return ActiveQuery
      * @throws InvalidConfigException
      */
     public function getProductAttributes(): ActiveQuery
@@ -138,6 +136,7 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[Images]].
      *
+     * @return ActiveQuery
      */
     public function getImages(): ActiveQuery
     {
@@ -145,8 +144,9 @@ class Product extends ActiveRecord
     }
 
     /**
-     * Gets query for [[category]].
+     * Gets query for [[Category]].
      *
+     * @return ActiveQuery
      */
     public function getCategory(): ActiveQuery
     {
@@ -156,6 +156,7 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[Status]].
      *
+     * @return ActiveQuery
      */
     public function getStatus(): ActiveQuery
     {
@@ -165,6 +166,7 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[ProductTags]].
      *
+     * @return ActiveQuery
      */
     public function getProductTags(): ActiveQuery
     {
@@ -174,36 +176,12 @@ class Product extends ActiveRecord
     /**
      * Gets query for [[Tags]].
      *
+     * @return ActiveQuery
      * @throws InvalidConfigException
      */
     public function getTags(): ActiveQuery
     {
         return $this->hasMany(Tag::class, ['id' => 'tag_id'])->viaTable('{{%product_tag}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return ProductQuery the active query used by this AR class.
-     */
-    public static function find(): ProductQuery
-    {
-        return new ProductQuery(get_called_class());
-    }
-
-    /**
-     * Gets list for relations models
-     *
-     * @return array
-     */
-    public function getRelatedData(): array
-    {
-        $categories = (new Category())->getRelatedData();
-
-        return $relatedData = [
-            'tags' => Tag::find()->select(['name', 'id'])->indexBy('id')->column(),
-            'statuses' => Status::find()->select(['status', 'id'])->indexBy('id')->column(),
-            'categories' => $categories,
-        ];
     }
 
     /**
@@ -225,13 +203,33 @@ class Product extends ActiveRecord
         return $path;
     }
 
-    public function afterSave($insert, $changedAttributes)
+    /**
+     * Gets list for relations models
+     *
+     * @return array
+     */
+    public function getRelatedData(): array
     {
-        parent::afterSave($insert, $changedAttributes);
+        $categories = (new Category())->getRelatedData();
 
-        if ($files = UploadedFile::getInstances($this, 'file') and $this->validate('files')) {
-            $image = new Image();
-            $image->uploadImages($files, $this->id);
-        }
+        return $relatedData = [
+            'tags' => Tag::find()->select(['name', 'id'])->indexBy('id')->column(),
+            'statuses' => Status::find()->select(['status', 'id'])->indexBy('id')->column(),
+            'categories' => $categories,
+        ];
     }
+
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        parent::afterSave($insert, $changedAttributes);
+//        $image = new Image();
+//        if ($files = UploadedFile::getInstances($this, 'file') and $this->validate('files')) {
+//            if ($oldImages = $this->getImages()) {
+//                $image = new Image();
+//                $image->uploadImages($files, $this->id, $oldImages);
+//            }
+//
+//            $image->uploadImages($files, $this->id);
+//        }
+//    }
 }

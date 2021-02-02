@@ -110,7 +110,17 @@ YiiAsset::register($this);
         <?= Module::t('module', 'IMAGES'); ?>
     </h2>
     <p>
-        <?= Html::a(Module::t('module', 'ADD_IMAGES'), ['/shop/image/create', 'product_id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?php
+        if (count($model->images) < Module::getInstance()->countUploadFiles) {
+            echo Html::a(Module::t('module', 'ADD_IMAGES'),
+                [
+                    '/shop/image/create', 'product_id' => $model->id
+                ],
+                [
+                    'class' => 'btn btn-primary'
+                ]);
+        }
+        ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $images,

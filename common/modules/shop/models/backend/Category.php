@@ -2,9 +2,9 @@
 
 namespace common\modules\shop\models\backend;
 
-use common\modules\shop\models\backend\helpers\TreeHelper;
 use common\modules\shop\Module;
 use yii\db\ActiveQuery;
+use common\modules\shop\models\backend\helpers\TreeHelper;
 use yii\db\ActiveRecord;
 
 /**
@@ -17,7 +17,6 @@ use yii\db\ActiveRecord;
  *
  * @property Category $parent
  * @property Category[] $categories
- * @property-read array $relatedData
  * @property Product[] $products
  */
 class Category extends ActiveRecord
@@ -25,7 +24,7 @@ class Category extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%category}}';
     }
@@ -33,7 +32,7 @@ class Category extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'alias'], 'required'],
@@ -47,7 +46,7 @@ class Category extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Module::t('module', 'ID'),
@@ -62,7 +61,7 @@ class Category extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getParent()
+    public function getParent(): ActiveQuery
     {
         return $this->hasOne(Category::class, ['id' => 'parent_id']);
     }
@@ -72,7 +71,7 @@ class Category extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getCategories()
+    public function getCategories(): ActiveQuery
     {
         return $this->hasMany(Category::class, ['parent_id' => 'id']);
     }
@@ -82,7 +81,7 @@ class Category extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getProducts()
+    public function getProducts(): ActiveQuery
     {
         return $this->hasMany(Product::class, ['category_id' => 'id']);
     }
@@ -92,10 +91,9 @@ class Category extends ActiveRecord
      *
      * @return array
      */
-    public function getRelatedData()
+    public function getRelatedData(): array
     {
-
-        $categories = self::find()->asArray()->all();
+        $categories = $this->find()->asArray()->all();
 
         return $relatedData = TreeHelper::makeList($categories);
     }

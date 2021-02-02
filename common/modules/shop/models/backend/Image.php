@@ -4,20 +4,17 @@ namespace common\modules\shop\models\backend;
 
 use common\modules\shop\models\backend\helpers\FileManager;
 use common\modules\shop\Module;
-use JetBrains\PhpStorm\ArrayShape;
-use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
-
 
 /**
  * This is the model class for table "{{%image}}".
  *
  * @property int $id
  * @property int $product_id
- * @property int $sort_id
  * @property string $name
+ * @property int $sort_id
  *
  * @property Product $product
  */
@@ -51,10 +48,9 @@ class Image extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['product_id', 'name'], 'required'],
+            [['product_id', 'name', 'sort_id'], 'required'],
             [['product_id', 'sort_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => $this->countUploadFiles],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -68,7 +64,7 @@ class Image extends ActiveRecord
             'id' => Module::t('module', 'ID'),
             'product_id' => Module::t('module', 'PRODUCT_ID'),
             'name' => Module::t('module', 'NAME'),
-            'file' => Module::t('module', 'IMAGES'),
+            'sort_id' => Module::t('module', 'SORT_ID'),
         ];
     }
 
@@ -82,13 +78,7 @@ class Image extends ActiveRecord
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    /**
-     * @param array $files
-     * @param integer $product_id
-     * @return bool
-     * @throws Exception
-     */
-    public function uploadImages(array $files, int $product_id): bool
+    public function uploadImages(array $files, int $product_id, ActiveQuery $oldImages = null): bool
     {
         $path = Module::getAlias('@uploads/images/shop/' . $product_id . '/');
         $fileManager = new FileManager();
@@ -109,13 +99,7 @@ class Image extends ActiveRecord
         }
     }
 
-    /**
-     * @param $images
-     * @param $product_id
-     * @throws
-     */
-    public
-    function deleteImages($images, $product_id)
+    public function deleteImages(array $images, int $product_id)
     {
         if ($images) {
             $names = array();

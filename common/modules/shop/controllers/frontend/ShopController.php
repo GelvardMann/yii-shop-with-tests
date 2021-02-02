@@ -9,19 +9,17 @@ use yii\web\Controller;
 
 class ShopController extends Controller
 {
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $model = new Product();
 
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $relatedData = $model->getRelatedData();
-        $mainImage = ['name' => 'test'];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'relatedData' => $relatedData,
-            'mainImage' => $mainImage,
         ]);
     }
 

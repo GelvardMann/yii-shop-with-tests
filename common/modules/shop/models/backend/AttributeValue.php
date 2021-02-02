@@ -3,6 +3,7 @@
 namespace common\modules\shop\models\backend;
 
 use common\modules\shop\Module;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -13,9 +14,7 @@ use yii\db\ActiveRecord;
  * @property int $attribute_id
  * @property string $value
  *
- * @property Attribute $attribute
- * @property-read ActiveQuery $productAttributes
- * @property-read array $relatedData
+ * @property Attribute $attribute0
  * @property Product $product
  */
 class AttributeValue extends ActiveRecord
@@ -23,7 +22,7 @@ class AttributeValue extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%attribute_value}}';
     }
@@ -31,22 +30,22 @@ class AttributeValue extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'attribute_id', 'value'], 'required'],
             [['product_id', 'attribute_id'], 'integer'],
             [['value'], 'string', 'max' => 255],
             [['product_id', 'attribute_id'], 'unique', 'targetAttribute' => ['product_id', 'attribute_id']],
-            [['attribute_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attribute::class, 'targetAttribute' => ['attribute_id' => 'id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::class, 'targetAttribute' => ['product_id' => 'id']],
+            [['attribute_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attribute::className(), 'targetAttribute' => ['attribute_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'product_id' => Module::t('module', 'PRODUCT_ID'),
@@ -60,7 +59,7 @@ class AttributeValue extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getProductAttributes()
+    public function getProductAttributes(): ActiveQuery
     {
         return $this->hasOne(Attribute::class, ['id' => 'attribute_id']);
     }
@@ -70,12 +69,18 @@ class AttributeValue extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getProduct()
+    public function getProduct(): ActiveQuery
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
 
-    public function getRelatedData()
+
+    /**
+     * Gets list for relations models
+     *
+     * @return array
+     */
+    public function getRelatedData(): array
     {
         return $relatedData = [
             'attributes' => Attribute::find()->select(['name', 'id'])->indexBy('id')->column(),

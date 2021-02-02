@@ -1,6 +1,6 @@
 <?php
 
-namespace Common\Modules\Shop\Models\Backend\Search;
+namespace common\modules\shop\models\backend\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -11,16 +11,13 @@ use common\modules\shop\models\backend\Product;
  */
 class ProductSearch extends Product
 {
-
-    public ?int $tag_id = null;
-
     /**
      * {@inheritdoc}
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
-            [['id', 'code', 'tag_id', 'category_id', 'new', 'sale', 'active', 'status_id', 'percent', 'price', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'code', 'category_id', 'new', 'sale', 'active', 'status_id', 'percent', 'price', 'created_at', 'updated_at'], 'integer'],
             [['name', 'description', 'alias'], 'safe'],
         ];
     }
@@ -68,7 +65,6 @@ class ProductSearch extends Product
             'sale' => $this->sale,
             'active' => $this->active,
             'status_id' => $this->status_id,
-            '{{%product_tag}}.tag_id' => $this->tag_id,
             'percent' => $this->percent,
             'price' => $this->price,
             'created_at' => $this->created_at,

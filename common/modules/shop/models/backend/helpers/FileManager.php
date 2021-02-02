@@ -6,6 +6,7 @@ use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
 
 /**
  * Class FileManager
@@ -30,6 +31,10 @@ class FileManager extends FileHelper
                 $name = strtotime('now') . '_' . Yii::$app->getSecurity()->generateRandomString(10) . '.' . $image->extension;
                 $image->saveAs($uploadPath . '/' . $name);
                 $names[] = $name;
+                $this->createDirectory($uploadPath . '/thumbnail/');
+                Image::thumbnail($uploadPath . '/' . $name, 150, 150)
+                    ->save($uploadPath . '/thumbnail/' . $name);
+
             }
         }
 
@@ -40,6 +45,7 @@ class FileManager extends FileHelper
     /**
      * @param $path
      * @param $name
+     * @throws ErrorException
      */
     public function deleteFile($name, $path)
     {
@@ -49,9 +55,20 @@ class FileManager extends FileHelper
 
         foreach ($name as $item) {
             $file = $path . $item;
+            $thumbnailFile = $path . '/thumbnail/' . $item;
+            if (file_exists($thumbnailFile)) {
+                $this->unlink($thumbnailFile);
+                if (empty($dir = glob($path . '/thumbnail/*.*'))) {
+                    $this->removeDirectory($path);
+                }
+            }
             if (file_exists($file)) {
                 $this->unlink($file);
+                if (empty($dir = glob($path . '/*.*'))) {
+                    $this->removeDirectory($path);
+                }
             }
         }
+
     }
 }

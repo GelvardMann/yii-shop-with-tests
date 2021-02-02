@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = Module::t('module', 'UPDATE');
     <?= $this->render('_form', [
         'model' => $model,
         'relatedData' => $relatedData,
-        'images' => $images
+        'images' => $images,
+        'multiple' => false,
     ]) ?>
 
 </div>

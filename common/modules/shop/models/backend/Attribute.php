@@ -21,7 +21,7 @@ class Attribute extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%attribute}}';
     }
@@ -29,7 +29,7 @@ class Attribute extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name'], 'required'],
@@ -40,11 +40,11 @@ class Attribute extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Module::t('module', 'ID'),
-            'name' => Module::t('module', 'NAME'),
+            'name' => Module::t('module', 'Name'),
         ];
     }
 
@@ -53,7 +53,7 @@ class Attribute extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getAttributeValues()
+    public function getAttributeValues(): ActiveQuery
     {
         return $this->hasMany(AttributeValue::class, ['attribute_id' => 'id']);
     }
@@ -64,7 +64,7 @@ class Attribute extends ActiveRecord
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getProducts()
+    public function getProducts(): ActiveQuery
     {
         return $this->hasMany(Product::class, ['id' => 'product_id'])->viaTable('{{%attribute_value}}', ['attribute_id' => 'id']);
     }

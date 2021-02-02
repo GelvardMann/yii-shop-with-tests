@@ -13,6 +13,8 @@ use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -37,9 +39,9 @@ class ProductController extends Controller
 
     /**
      * Lists all Product models.
-     * @return mixed
+     * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
         $model = new Product();
 
@@ -57,10 +59,10 @@ class ProductController extends Controller
     /**
      * Displays a single Product model.
      * @param integer $id
-     * @return mixed
+     * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView(int $id)
+    public function actionView(int $id): string
     {
         $model = $this->findModel($id);
 
@@ -79,14 +81,18 @@ class ProductController extends Controller
     /**
      * Creates a new Product model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return string
      * @throws
      */
-    public function actionCreate()
+    public function actionCreate(): string
     {
         $model = new Product();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($files = UploadedFile::getInstances($model, 'file')) {
+                $image = new Image();
+                $image->uploadImages($files, $model->id);
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -103,17 +109,19 @@ class ProductController extends Controller
      * Updates an existing Product model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws Exception
      */
-    public function actionUpdate(int $id): mixed
+    public function actionUpdate(int $id): Response|string
     {
         $model = $this->findModel($id);
-        $images = $model->images;
-        $imagesPath = $model->getPathImages($images);
+        $imagesPath = $model->getPathImages($model->images);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($files = UploadedFile::getInstances($model, 'file')) {
+                $image = new Image();
+                $image->uploadImages($files, $model->id);
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -131,16 +139,16 @@ class ProductController extends Controller
      * Deletes an existing Product model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response|string
      * @throws NotFoundHttpException
-     * @throws StaleObjectException|\Throwable
+     * @throws StaleObjectException
+     * @throws \Throwable
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): Response|string
     {
         $model = $this->findModel($id);
         $images = $model->images;
         $imageModel = new Image();
-//        $path = Module::getAlias('@uploads/images/shop/' . $id);
         $imageModel->deleteImages($images, $id);
         $model->delete();
 

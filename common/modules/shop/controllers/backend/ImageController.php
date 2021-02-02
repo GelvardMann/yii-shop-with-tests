@@ -4,15 +4,14 @@ namespace common\modules\shop\controllers\backend;
 
 use common\modules\shop\models\backend\helpers\FileManager;
 use common\modules\shop\Module;
-use JetBrains\PhpStorm\ArrayShape;
 use Yii;
 use common\modules\shop\models\backend\Image;
 use common\modules\shop\models\backend\search\ImageSearch;
-use yii\base\ErrorException;
-use yii\base\Exception;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 /**
@@ -37,7 +36,7 @@ class ImageController extends Controller
 
     /**
      * Lists all Image models.
-     * @return mixed
+     * @return string
      */
     public function actionIndex(): string
     {
@@ -68,7 +67,6 @@ class ImageController extends Controller
      * If creation is successful, the browser will be redirected to the 'product view' page.
      * @param $product_id
      * @return string
-     * @throws Exception
      */
     public function actionCreate($product_id): string
     {
@@ -118,11 +116,13 @@ class ImageController extends Controller
      * Deletes an existing Image model.
      * If deletion is successful, the browser will be redirected to the 'product view' page.
      * @param integer $id
-     * @param $product_id
-     * @return string
+     * @param integer $product_id
+     * @return mixed
      * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws StaleObjectException
      */
-    public function actionDelete(int $id, $product_id): string
+    public function actionDelete(int $id, int $product_id): mixed
     {
         $fileManager = new FileManager();
 

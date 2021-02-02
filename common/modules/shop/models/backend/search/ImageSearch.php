@@ -60,6 +60,7 @@ class ImageSearch extends Image
         $query->andFilterWhere([
             'id' => $this->id,
             'product_id' => $this->product_id,
+            'sort_id' => $this->sort_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

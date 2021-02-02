@@ -2,15 +2,18 @@
 
 use common\modules\shop\Module;
 use yii\widgets\LinkPager;
+use common\modules\shop\models\frontend\Product;
 
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\shop\models\frontend\search\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $relatedData Product */
 
 $this->title = Module::t('module', 'PRODUCTS');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="product-index">
     <div class="container">
         <p>
@@ -37,7 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php foreach ($dataProvider->getModels() as $product): ?>
                     <?= $this->render('_products', [
                         'product' => $product,
-                        'mainImage' => $mainImage
                     ]) ?>
                 <?php endforeach; ?>
             </div>

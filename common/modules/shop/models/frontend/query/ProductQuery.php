@@ -12,16 +12,26 @@ use yii\db\ActiveQuery;
  */
 class ProductQuery extends ActiveQuery
 {
-    public function active()
+    public function active(): ProductQuery
     {
         return $this->andWhere('[[status]]=1');
+    }
+
+    /**
+     * {}
+     * @param $id
+     * @return ProductQuery
+     */
+    public function forCategory($id): ProductQuery|self
+    {
+        return $this->andWhere(['category' => $id]);
     }
 
     /**
      * {@inheritdoc}
      * @return Product[]|array
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }
@@ -30,7 +40,7 @@ class ProductQuery extends ActiveQuery
      * {@inheritdoc}
      * @return Product|array|null
      */
-    public function one($db = null)
+    public function one($db = null): Product|array|null
     {
         return parent::one($db);
     }

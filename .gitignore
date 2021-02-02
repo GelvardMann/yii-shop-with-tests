@@ -44,7 +44,7 @@ phpunit.phar
 
 # ignore uploads folder
 /frontend/web/uploads/
-/backend/web/uploads/
+/backend/web/uploads
 
 # ignore fixtures
 /common/fixtures

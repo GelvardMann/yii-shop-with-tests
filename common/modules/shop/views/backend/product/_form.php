@@ -51,6 +51,7 @@ use yii\widgets\ActiveForm;
             'initialPreviewAsData' => true,
             'initialPreviewConfig' => isset($images['config']) ? $images['config'] : false,
             'overwriteInitial' => false,
+            'maxFileCount' => Module::getInstance()->countUploadFiles,
             'showRemove' => true,
             'showUpload' => false,
             'deleteUrl' => Url::toRoute([

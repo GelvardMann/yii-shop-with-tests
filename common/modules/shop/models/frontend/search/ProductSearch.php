@@ -14,7 +14,7 @@ class ProductSearch extends Product
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'code', 'category_id', 'new', 'sale', 'active', 'status_id', 'percent', 'price', 'created_at', 'updated_at'], 'integer'],
@@ -25,7 +25,7 @@ class ProductSearch extends Product
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
@@ -38,9 +38,9 @@ class ProductSearch extends Product
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params): ActiveDataProvider
     {
-        $query = Product::find()->with(['category', 'status', 'tags', 'images'])->joinWith('productTags', false);
+        $query = Product::find()->with(['category', 'status', 'tags'])->with('images')->joinWith('productTags', false);
 
         // add conditions that should always apply here
 

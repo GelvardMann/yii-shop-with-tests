@@ -53,7 +53,7 @@ class Product extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%product}}';
     }
@@ -61,7 +61,7 @@ class Product extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['code', 'category_id', 'new', 'sale', 'active', 'status_id', 'percent', 'price', 'created_at', 'updated_at'], 'integer'],
@@ -77,7 +77,7 @@ class Product extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Module::t('module', 'ID'),
@@ -173,7 +173,7 @@ class Product extends ActiveRecord
      * {@inheritdoc}
      * @return ProductQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): ProductQuery
     {
         return new ProductQuery(get_called_class());
     }
@@ -183,7 +183,7 @@ class Product extends ActiveRecord
      *
      * @return array
      */
-    public function getRelatedData()
+    public function getRelatedData(): array
     {
         $categories = (new Category())->getRelatedData();
 

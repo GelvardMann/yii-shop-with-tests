@@ -20,7 +20,7 @@ class ProductTag extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%product_tag}}';
     }
@@ -28,7 +28,7 @@ class ProductTag extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'tag_id'], 'required'],
@@ -42,7 +42,7 @@ class ProductTag extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'product_id' => Module::t('module', 'PRODUCT_ID'),
@@ -55,7 +55,7 @@ class ProductTag extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getProduct()
+    public function getProduct(): ActiveQuery
     {
         return $this->hasOne(Product::class, ['id' => 'product_id']);
     }
@@ -65,7 +65,7 @@ class ProductTag extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public function getTag()
+    public function getTag(): ActiveQuery
     {
         return $this->hasOne(Tag::class, ['id' => 'tag_id']);
     }
@@ -75,7 +75,7 @@ class ProductTag extends ActiveRecord
      *
      * @return array
      */
-    public function getRelatedData()
+    public function getRelatedData(): array
     {
         return $relatedData =
             [

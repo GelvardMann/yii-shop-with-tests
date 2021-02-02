@@ -12,7 +12,7 @@ use yii\db\ActiveQuery;
  */
 class ProductQuery extends ActiveQuery
 {
-    public function active()
+    public function active(): ProductQuery
     {
         return $this->andWhere('[[status]]=1');
     }
@@ -21,7 +21,7 @@ class ProductQuery extends ActiveQuery
      * {@inheritdoc}
      * @return Product[]|array
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }
